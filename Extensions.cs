@@ -10,7 +10,10 @@ namespace CustomExtensions
             if (length == -1)
                 length = source.Length - startIndex;
 
-            if (length <= 0) throw new IndexOutOfRangeException("Start index " + startIndex + " for array of length " + source.Length);
+            //Interesting how substring allows having 0, but it seems have this check can actually
+            //help reveal bugs if you accidently pass in 0 if for example you pass sub array to
+            //method but you still want the index to be relative to the original!
+            if (length < 0) throw new IndexOutOfRangeException("Start index " + startIndex + " for array of length " + source.Length);
 
             var destination = new T[length];
             Array.Copy(source, startIndex, destination, 0, length);
@@ -27,10 +30,30 @@ namespace CustomExtensions
             return x;
         }
 
-//         public static T[] Exclude<T>(this T[] source, int index)
-//         {
-//             source.
-// source.SubArray(0, index).Concat(source.SubArray(index))
-//         }
+        public static int RFactorial(this int n)
+        {
+            if (n < 0) throw new ArgumentException("interger must be >= 0");
+
+            if (n == 1 || n == 0)
+                return 1;
+            return n * RFactorial(n - 1);
+        }
+
+        // public static bool OR(this int n, Func<int, bool> f, params int [] list)
+        // {
+
+        // }
+
+
+        public static T[] RemoveAt<T>(this T[] source, int index)
+        {
+            var rightSubArray = Array.Empty<T>();
+            var leftSubArray = source.SubArray(0, index);
+
+            if (source.Length != index + 1)
+                rightSubArray = source.SubArray(index + 1);
+
+            return leftSubArray.Concat(rightSubArray);
+        }
     }
 }

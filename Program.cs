@@ -1,55 +1,63 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using CustomExtensions;
 
 namespace personalLib
 {
     class Program
     {
-        //Example input: 123
-        //Example Output after each call to function:
-        // 123
-        // 321
-        // 231
-        // 132
-        // 312
-        // 213
-
         // public static void NextPermutation<T>(ref)
         // {
 
         // }
 
-
-        static List<char[]> RPrintAllPermutations(char[] a)
+        static List<char[]> RPrintAllPermutations(char[] input)
         {
-            var tmp = new List<char[]>();
+            var permutations = new List<char[]>();
 
-            if (a.Length == 1)
+            if (input.Length == 1)
             {
-                tmp.Add(a);
-                return tmp;
+                permutations.Add(input);
+                return permutations;
             }
 
-
-            for (int i = 0; i != a.Length; ++i)
+            for (int i = 0; i != input.Length; ++i)
             {
-                var rt = RPrintAllPermutations(a.SubArray(i + 1));
+                var rt = RPrintAllPermutations(input.RemoveAt(i));
                 foreach (var val in rt)
                 {
-                    tmp.Add(a.SubArray(0, 1).Concat(val));
+                    permutations.Add(input.SubArray(i, 1).Concat(val));
                 }
             }
-            return tmp;
+
+            Debug.Assert(permutations.Count == input.Length.RFactorial());
+            return permutations;
         }
 
         static void Main(string[] args)
         {
             var haha = "Frewfre";
-            var toto = haha.Substring(0,0);
-            // var tmp = RPrintAllPermutations("12".ToCharArray());
-            // tmp.ForEach(Console.WriteLine);
-            Console.WriteLine("Hello World!");
+            var toto = haha.Substring(haha.Length);
+            //What we know about substring, you can pass 0 for length, 
+            //if start index is length of string and you have 0 that is fine
+
+            if (args.Length != 0)
+            {
+                System.Console.WriteLine(System.Reflection.Assembly.GetEntryAssembly().Location);
+
+                RPrintAllPermutations(args[0].ToCharArray()).ForEach(System.Console.WriteLine);
+                return;
+            }
+            else
+            {
+                System.Console.WriteLine("Yippiii  " + System.Reflection.Assembly.GetEntryAssembly().Location);
+
+                var tmp = RPrintAllPermutations("1234".ToCharArray());
+                tmp.ForEach(Console.WriteLine);
+                Console.WriteLine("Hello World!");
+            }
+
         }
     }
 }
