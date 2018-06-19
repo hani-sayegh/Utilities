@@ -1,8 +1,9 @@
 using System;
+using System.Collections.Generic;
 
 namespace CustomExtensions
 {
-    static class Tmp
+    static class Utilities
     {
         //Can not give till default till run time
         public static T[] SubArray<T>(this T[] source, int startIndex, int length = -1)
@@ -39,6 +40,11 @@ namespace CustomExtensions
             return n * RFactorial(n - 1);
         }
 
+        public static T Back<T>(this List<T> source)
+        {
+            return source[source.Count - 1];
+        }
+
         // public static bool OR(this int n, Func<int, bool> f, params int [] list)
         // {
 
@@ -55,5 +61,34 @@ namespace CustomExtensions
 
             return leftSubArray.Concat(rightSubArray);
         }
+
+        public static void Populate<T>(this T[] source, T value, int startIndex = 0, int endIndex = -1)
+        {
+            if (endIndex == -1) //But if user actually enters -1 we want to stop that!!!
+                endIndex = source.Length - 1;
+
+            if (startIndex < 0 || startIndex >= source.Length || endIndex >= source.Length || startIndex >= endIndex)
+                throw new IndexOutOfRangeException("Start index " + startIndex + " for array of length " + source.Length);
+
+            for (int i = startIndex; i <= endIndex; i++)
+            {
+                source[i] = value;
+            }
+        }
+
+        public static void Swap<T>(ref T a, ref T b)
+        {
+            var tmp = a;
+            a = b;
+            b = tmp;
+        }
+
+        public static void Swap<T>(this IList<T> list, int indexA, int indexB)
+        {
+            T tmp = list[indexA];
+            list[indexA] = list[indexB];
+            list[indexB] = tmp;
+        }
+        //Create or function that takes in variables and condition
     }
 }
