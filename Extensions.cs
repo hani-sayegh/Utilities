@@ -89,6 +89,12 @@ namespace CustomExtensions
             list[indexA] = list[indexB];
             list[indexB] = tmp;
         }
+
+        public static void Sort<T>(this List<T> list, int index, int count)
+        {
+            list.Sort(index, count, Comparer<T>.Default);
+        }
+
         //Create or function that takes in variables and condition
     }
 }
