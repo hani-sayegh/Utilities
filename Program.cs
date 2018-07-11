@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using CustomExtensions;
@@ -71,14 +71,41 @@ namespace personalLib
 
         static void Main(string[] args)
         {
-            int a = 10;
-            int b = 12;
+            //Should be taken to seperate file.
+            ///
+            string fullFilePath = @"C:\Users\battlepants\Desktop\sdf.txt";
+            var tmp = File.ReadAllLines(fullFilePath);
+            var lines = new List<string>();
+            foreach (var line in tmp)
+            {
+                var lineLength = line.Length;
+                var lineLengthLimit = 80;
+                var lineIdx = System.Math.Min(lineLengthLimit, lineLength);
+                var startIdx = 0;
+                while (lineIdx < lineLength)
+                {   
+                    while (!System.Char.IsWhiteSpace(line[lineIdx]))
+                    {
+                        --lineIdx;
+                        if (lineIdx == -1)
+                            goto Ju;
 
-            Utilities.Swap(ref a, ref b);
-            var haha = "Frewfre";
-            var toto = haha.Substring(haha.Length);
-            //What we know about substring, you can pass 0 for length, 
-            //if start index is length of string and you have 0 that is fine
+                    }
+                    lines.Add(line.Substring(startIdx
+                    , lineIdx - startIdx));
+                    startIdx = lineIdx + 1;
+                    lineIdx += lineLengthLimit;
+                }
+            Ju:
+                lines.Add(line.Substring(startIdx));
+            }
+            File.WriteAllLines(Path.Combine(Path.GetDirectoryName(fullFilePath), "BiggApl"),
+            lines);
+            return;
+            ///
+            var toto = new int[] { 1, 2, 3 };
+
+            var subseqs = Enumerable.Range(0, 3).SelectMany(x => toto.Combinations(x));
 
             if (args.Length != 0)
             {
