@@ -68,9 +68,11 @@ namespace personalLib
             return permutations;
         }
 
-
+    
         static void Main(string[] args)
         {
+
+
             //Should be taken to seperate file.
             ///
             string fullFilePath = @"C:\Users\battlepants\Desktop\sdf.txt";

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace CustomExtensions
 {
-    static class Utilities
+    public static class Utilities
     {
         //Can not give till default till run time
         public static T[] SubArray<T>(this T[] source, int startIndex, int length = -1)
@@ -51,6 +51,10 @@ namespace CustomExtensions
 
         // }
 
+        public static bool OutOfBounds<T>(this T[] source, int index)
+        {
+            return index < 0 || index > source.Length - 1;
+        }
 
         public static T[] RemoveAt<T>(this T[] source, int index)
         {
@@ -84,6 +88,21 @@ namespace CustomExtensions
             b = tmp;
         }
 
+        public static int Segregate<T>(this T[] b, Func<T, bool> crap)
+        {
+            int satisfactionCount = 0;
+            for (int i = 0; i != b.Length; ++i)
+            {
+                if (crap(b[i]))
+                {
+                    var tmp = b[i];
+                    b[i] = b[satisfactionCount];
+                    b[satisfactionCount] = tmp;
+                    ++satisfactionCount;
+                }
+            }
+            return satisfactionCount;
+        }
         public static void Swap<T>(this IList<T> list, int indexA, int indexB)
         {
             T tmp = list[indexA];
@@ -96,6 +115,14 @@ namespace CustomExtensions
             list.Sort(index, count, Comparer<T>.Default);
         }
 
+        public static bool IsDivisbleBy(this int i, int x)
+        {
+            return (i % x) == 0;
+        }
+
+        public static bool IsPositive(this int i) => i > 0;
+        public static bool IsNegative(this int i) => i < 0;
+
         public static IEnumerable<IEnumerable<T>> Combinations<T>(this IEnumerable<T> elements, int k)
         {
             return k == 0 ? new[] { new T[0] } :
@@ -105,3 +132,4 @@ namespace CustomExtensions
         //Create or function that takes in variables and condition
     }
 }
+
